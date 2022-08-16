@@ -1,3 +1,5 @@
+import datetime
+
 from app import db
 
 
@@ -16,9 +18,10 @@ class Group(db.Model):
 
 class Training(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    training_date = db.Column(db.Date)
+    training_date = db.Column(db.Date, default=datetime.datetime.now)
     status = db.Column(db.String(255))
     sets = db.relationship("Set", backref="training", lazy=True)
+    users = db.relationship("User", backref="training", lazy=True)
 
 
 class Weight(db.Model):
@@ -31,14 +34,24 @@ class Weight(db.Model):
 class Exercise(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(255))
-    group_id = db.Column(db.Integer, db.ForeignKey("group.id"), nullable=True)
+    group_id = db.Column(db.Integer, db.ForeignKey("group.id", ondelete="SET NULL"), nullable=True)
     sets = db.relationship("Set", backref="exercise", lazy=True)
 
 
 class Set(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     exercise_count = db.Column(db.Integer)
-    exercise_id = db.Column(db.Integer, db.ForeignKey("exercise.id"), nullable=False)
-    training_id = db.Column(db.Integer, db.ForeignKey("training.id"), nullable=False)
-    distance_id = db.Column(db.Integer, db.ForeignKey("distance.id"), nullable=True)
-    weight_id = db.Column(db.Integer, db.ForeignKey("weight.id"), nullable=True)
+    exercise_id = db.Column(db.Integer, db.ForeignKey("exercise.id", ondelete="CASCADE"), nullable=False)
+    training_id = db.Column(db.Integer, db.ForeignKey("training.id", ondelete="CASCADE"), nullable=False)
+    distance_id = db.Column(db.Integer, db.ForeignKey("distance.id", ondelete="CASCADE"), nullable=True)
+    weight_id = db.Column(db.Integer, db.ForeignKey("weight.id", ondelete="CASCADE"), nullable=True)
+
+
+class User(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    first_name = db.Column(db.String(255))
+    last_name = db.Column(db.String(255))
+    email = db.Column(db.String(255), unique=True)
+    training_id = db.Column(db.Integer, db.ForeignKey("training.id"))
+    is_active = db.Column(db.Boolean)
+    created_at = db.Column(db.Date, default=datetime.datetime.now)
