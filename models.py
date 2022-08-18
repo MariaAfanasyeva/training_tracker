@@ -40,7 +40,7 @@ class Exercise(db.Model):
 
 class Set(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    exercise_count = db.Column(db.Integer)
+    exercise_count = db.Column(db.Integer, nullable=True)
     exercise_id = db.Column(db.Integer, db.ForeignKey("exercise.id", ondelete="CASCADE"), nullable=False)
     training_id = db.Column(db.Integer, db.ForeignKey("training.id", ondelete="CASCADE"), nullable=False)
     distance_id = db.Column(db.Integer, db.ForeignKey("distance.id", ondelete="CASCADE"), nullable=True)
