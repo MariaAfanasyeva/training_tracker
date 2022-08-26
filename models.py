@@ -54,4 +54,5 @@ class User(db.Model):
     email = db.Column(db.String(255), unique=True)
     training_id = db.Column(db.Integer, db.ForeignKey("training.id"))
     is_active = db.Column(db.Boolean)
+    password = db.Column(db.String(255))
     created_at = db.Column(db.Date, default=datetime.datetime.now)

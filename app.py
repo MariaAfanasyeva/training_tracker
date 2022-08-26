@@ -15,8 +15,6 @@ app.config["DEBUG"] = os.getenv("DEBUG")
 
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
+from views.auth import auth
 
-
-@app.route("/")
-def hello():
-    return "Hello, world"
+app.register_blueprint(auth)
