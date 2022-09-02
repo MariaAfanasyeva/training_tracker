@@ -24,7 +24,7 @@ def create_tokens(user_id):
         "grant_type": "refresh",
     }
     refresh_token = jwt.encode(refresh_token_payload, app.config["SECRET_KEY"], algorithm="HS256")
-    return {"access_token": access_token, "refresh_token": refresh_token}
+    return make_response(jsonify({"access_token": access_token, "refresh_token": refresh_token}))
 
 
 def verify_refresh_token(access_token, refresh_token):

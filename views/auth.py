@@ -1,11 +1,9 @@
-import jwt
 from flask import Blueprint, jsonify, make_response, request
 from werkzeug.security import check_password_hash, generate_password_hash
 
 from app import db
 from models import User
-from schemas import UserSchema
-from services.auth import create_tokens
+from services.auth import create_tokens, use_refresh_token, verify_refresh_token
 
 auth = Blueprint("auth", __name__)
 
@@ -18,7 +16,12 @@ def signup():
     password = request.json["password"]
     user = User.query.filter_by(email=email).first()
     if not user:
-        user = User(first_name=first_name, last_name=last_name, email=email, password=generate_password_hash(password))
+        user = User(
+            first_name=first_name,
+            last_name=last_name,
+            email=email,
+            password=generate_password_hash(password),
+        )
         db.session.add(user)
         db.session.commit()
         return make_response(jsonify({"message": "Signup successful"}), 200)
@@ -39,3 +42,15 @@ def login():
         return create_tokens(user.id)
     else:
         return make_response(jsonify({"message": "Invalid password"}), 401)
+
+
+@auth.route("/refresh_token", methods=["POST"])
+def refresh():
+    access_token = request.json["access_token"]
+    refresh_token = request.json["refresh_token"]
+    if not access_token or not refresh_token:
+        return make_response(jsonify({"message": "Tokens are missing"}), 401)
+    if verify_refresh_token(access_token, refresh_token):
+        return use_refresh_token(refresh_token)
+    else:
+        return make_response(jsonify({"message": "Invalid token"}), 401)

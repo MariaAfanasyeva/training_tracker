@@ -17,4 +17,4 @@ db = SQLAlchemy(app)
 migrate = Migrate(app, db)
 from views.auth import auth
 
-app.register_blueprint(auth)
+app.register_blueprint(auth, url_prefix="/auth")
