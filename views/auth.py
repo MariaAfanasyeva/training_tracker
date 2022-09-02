@@ -23,3 +23,19 @@ def signup():
         return make_response(jsonify({"message": "Signup successful"}), 200)
     else:
         return make_response(jsonify({"message": "User with this email already exists"}), 202)
+
+
+@auth.route("/login", methods=["POST"])
+def login():
+    email = request.json["email"]
+    password = request.json["password"]
+    if not password or not email:
+        return make_response(jsonify({"message": "Please enter your email address and password"}), 401)
+    user = User.query.filter_by(email=email).first()
+    if not user:
+        return make_response(jsonify({"message": "User with this email doesn't exist"}), 401)
+    if check_password_hash(user.password, password):
+        # TODO: create function for creating refresh token (create file services.py) and implement login (return access and refresh token)
+        pass
+    else:
+        return make_response(jsonify({"message": "Invalid password"}), 401)
