@@ -1,11 +1,10 @@
 import datetime
 from functools import wraps
-from tkinter import E
 
 import jwt
 from flask import jsonify, make_response, request
 
-import app
+from app import app
 from models import User
 
 
@@ -65,6 +64,3 @@ def login_required(func):
         return func(current_user, *args, **kwargs)
 
     return wrapped_login_required
-
-
-# TODO: create verify_token function and add to login_required

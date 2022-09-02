@@ -5,6 +5,7 @@ from werkzeug.security import check_password_hash, generate_password_hash
 from app import db
 from models import User
 from schemas import UserSchema
+from services.auth import create_tokens
 
 auth = Blueprint("auth", __name__)
 
@@ -35,7 +36,6 @@ def login():
     if not user:
         return make_response(jsonify({"message": "User with this email doesn't exist"}), 401)
     if check_password_hash(user.password, password):
-        # TODO: create function for creating refresh token (create file services.py) and implement login (return access and refresh token)
-        pass
+        return create_tokens(user.id)
     else:
         return make_response(jsonify({"message": "Invalid password"}), 401)
