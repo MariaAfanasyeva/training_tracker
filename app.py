@@ -17,4 +17,16 @@ db = SQLAlchemy(app)
 migrate = Migrate(app, db)
 from views.auth import auth
 
-app.register_blueprint(auth, url_prefix="/auth")
+app.register_blueprint(auth)
+from views.trainings import training
+
+app.register_blueprint(training)
+from views.groups import group
+
+app.register_blueprint(group)
+from views.distances import distance
+
+app.register_blueprint(distance)
+from views.exercises import exercise
+
+app.register_blueprint(exercise)

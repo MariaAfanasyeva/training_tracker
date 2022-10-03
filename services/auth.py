@@ -61,6 +61,33 @@ def login_required(func):
                     return make_response(jsonify({"message": "Invalid Authentication Token"}), 401)
             except Exception as e:
                 return make_response(jsonify({"message": "Something went wrong"}), 500)
+        else:
+            return make_response(jsonify({"message": "Authentication Token is missing"}), 500)
         return func(current_user, *args, **kwargs)
 
     return wrapped_login_required
+
+
+def get_user_from_request(request):
+    token = request.headers["Authorization"]
+    payload = jwt.decode(token, app.config["SECRET_KEY"], algorithms=["HS256"])
+    return User.query.filter_by(id=payload.get("user_id")).first()
+
+
+def get_user_from_token(token):
+    payload = jwt.decode(token, app.config["SECRET_KEY"], algorithms=["HS256"])
+    return User.query.filter_by(id=payload.get("user_id")).first()
+
+
+def user_is_admin(user):
+    if user.is_admin == True:
+        return True
+    else:
+        return False
+
+
+def user_is_author(user, element):
+    if element.added_by == user.id:
+        return True
+    else:
+        return False

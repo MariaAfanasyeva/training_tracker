@@ -7,12 +7,14 @@ class Distance(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     distance = db.Column(db.Numeric(10, 2))
     units = db.Column(db.String(100))
+    added_by = db.Column(db.Integer, db.ForeignKey("user.id", ondelete="SET NULL"), nullable=True, default=None)
     sets = db.relationship("Set", backref="distance", lazy=True)
 
 
 class Group(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(255))
+    added_by = db.Column(db.Integer, db.ForeignKey("user.id", ondelete="SET NULL"), nullable=True, default=None)
     exercises = db.relationship("Exercise", backref="group", lazy=True)
 
 
@@ -28,6 +30,7 @@ class Weight(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     weight = db.Column(db.Numeric(10, 2))
     units = db.Column(db.String(100))
+    added_by = db.Column(db.Integer, db.ForeignKey("user.id", ondelete="SET NULL"), nullable=True, default=None)
     sets = db.relationship("Set", backref="weight", lazy=True)
 
 
@@ -35,6 +38,7 @@ class Exercise(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(255))
     group_id = db.Column(db.Integer, db.ForeignKey("group.id", ondelete="SET NULL"), nullable=True)
+    added_by = db.Column(db.Integer, db.ForeignKey("user.id", ondelete="SET NULL"), nullable=True, default=None)
     sets = db.relationship("Set", backref="exercise", lazy=True)
 
 
@@ -53,6 +57,11 @@ class User(db.Model):
     last_name = db.Column(db.String(255))
     email = db.Column(db.String(255), unique=True)
     training_id = db.Column(db.Integer, db.ForeignKey("training.id"))
-    is_active = db.Column(db.Boolean)
+    is_active = db.Column(db.Boolean, default=False)
     password = db.Column(db.String(255))
+    is_admin = db.Column(db.Boolean, default=False)
     created_at = db.Column(db.Date, default=datetime.datetime.now)
+    distancess = db.relationship("Distance", backref="user", lazy=True)
+    groups = db.relationship("Group", backref="user", lazy=True)
+    weights = db.relationship("Weight", backref="user", lazy=True)
+    exercises = db.relationship("Exercise", backref="user", lazy=True)
