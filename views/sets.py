@@ -31,8 +31,8 @@ def create_set(current_user):
     exercise_count = request.json["exercise_count"]
     exercise_id = request.json["exercise_id"]
     training_id = request.json["training_id"]
-    distance_id = request.json["distance_id"]
-    weight_id = request.json["weight_id"]
+    distance_id = request.json.get("distance_id")
+    weight_id = request.json.get("weight_id")
     new_set = Set(
         exercise_count=exercise_count,
         training_id=training_id,
@@ -70,8 +70,8 @@ def update_set(current_user, set_id):
             exercise_count = request.json["exercise_count"]
             exercise_id = request.json["exercise_id"]
             training_id = request.json["training_id"]
-            distance_id = request.json["distance_id"]
-            weight_id = request.json["weight_id"]
+            distance_id = request.json.get("distance_id")
+            weight_id = request.json.get("weight_id")
             set.exercise_count = exercise_count
             set.exercise_id = exercise_id
             set.training_id = training_id

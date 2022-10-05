@@ -49,6 +49,7 @@ class Set(db.Model):
     training_id = db.Column(db.Integer, db.ForeignKey("training.id", ondelete="CASCADE"), nullable=False)
     distance_id = db.Column(db.Integer, db.ForeignKey("distance.id", ondelete="CASCADE"), nullable=True)
     weight_id = db.Column(db.Integer, db.ForeignKey("weight.id", ondelete="CASCADE"), nullable=True)
+    added_by = db.Column(db.Integer, db.ForeignKey("user.id", ondelete="SET NULL"), nullable=True, default=None)
 
 
 class User(db.Model):
