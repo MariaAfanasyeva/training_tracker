@@ -30,3 +30,9 @@ app.register_blueprint(distance)
 from views.exercises import exercise
 
 app.register_blueprint(exercise)
+from views.sets import set
+
+app.register_blueprint(set)
+from views.weights import weight
+
+app.register_blueprint(weight)

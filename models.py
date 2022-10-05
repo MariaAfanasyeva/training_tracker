@@ -22,8 +22,8 @@ class Training(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     training_date = db.Column(db.Date, default=datetime.datetime.now)
     status = db.Column(db.String(255))
+    user_id = db.Column(db.Integer, db.ForeignKey("user.id", ondelete="SET NULL"), nullable=True, default=None)
     sets = db.relationship("Set", backref="training", lazy=True)
-    users = db.relationship("User", backref="training", lazy=True)
 
 
 class Weight(db.Model):
@@ -56,7 +56,6 @@ class User(db.Model):
     first_name = db.Column(db.String(255))
     last_name = db.Column(db.String(255))
     email = db.Column(db.String(255), unique=True)
-    training_id = db.Column(db.Integer, db.ForeignKey("training.id"))
     is_active = db.Column(db.Boolean, default=False)
     password = db.Column(db.String(255))
     is_admin = db.Column(db.Boolean, default=False)

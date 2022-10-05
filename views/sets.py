@@ -48,7 +48,7 @@ def create_set(current_user):
 
 @set.route("/set/<set_id>", methods=["DELETE"])
 @login_required
-def delete_set(set_id, current_user):
+def delete_set(current_user, set_id):
     set = Set.query.get(set_id)
     if set is not None:
         if user_is_admin(current_user) or user_is_author(current_user, set):
@@ -63,7 +63,7 @@ def delete_set(set_id, current_user):
 
 @set.route("/set/<set_id>", methods=["PUT"])
 @login_required
-def update_set(set_id, current_user):
+def update_set(current_user, set_id):
     set = Set.query.get(set_id)
     if set is not None:
         if user_is_admin(current_user) or user_is_author(current_user, set):

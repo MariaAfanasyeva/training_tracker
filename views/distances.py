@@ -62,7 +62,7 @@ def update_distance(current_user, distance_id):
             new_distance_value = request.json["new_distance_value"]
             new_distance_unit = request.json["new_distance_unit"]
             distance.distance = new_distance_value
-            distance.unit = new_distance_unit
+            distance.units = new_distance_unit
             db.session.commit()
             return make_response(distance_schema.dump(distance), 200)
         else:

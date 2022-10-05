@@ -8,14 +8,14 @@ from services.auth import login_required, user_is_admin, user_is_author
 exercise = Blueprint("exercise", __name__)
 
 
-@exercise.register("/exercises", methods=["GET"])
+@exercise.route("/exercises", methods=["GET"])
 def get_all_exercises():
     exercises = Exercise.query.all()
     result = exercises_schema.dump(exercises)
     return make_response(result)
 
 
-@exercise.register("/exercise/<exercise_id>", methods=["GET"])
+@exercise.route("/exercise/<exercise_id>", methods=["GET"])
 def get_exercise_by_id(exercise_id):
     exercise = Exercise.query.get(exercise_id)
     if exercise is not None:
@@ -25,7 +25,7 @@ def get_exercise_by_id(exercise_id):
         return make_response(jsonify({"message": "Invalid exercise id"}), 500)
 
 
-@exercise.register("/exercise", methods=["POST"])
+@exercise.route("/exercise", methods=["POST"])
 @login_required
 def create_exercise(current_user):
     exercise_name = request.json["exercise_name"]
@@ -38,7 +38,7 @@ def create_exercise(current_user):
     return make_response(exercise_schema.dump(new_exercise), 201)
 
 
-@exercise.register("/exercise/<exercise_id>", methods=["DELETE"])
+@exercise.route("/exercise/<exercise_id>", methods=["DELETE"])
 @login_required
 def delete_exercise(current_user, exercise_id):
     exercise = Exercise.query.get(exercise_id)
@@ -53,7 +53,7 @@ def delete_exercise(current_user, exercise_id):
         return make_response(jsonify({"message": "Invalid exercise id"}), 500)
 
 
-@exercise.register("/exercise/<exercise_id>", methods=["PUT"])
+@exercise.route("/exercise/<exercise_id>", methods=["PUT"])
 @login_required
 def update_exercise(current_user, exercise_id):
     exercise = Exercise.query.get(exercise_id)
