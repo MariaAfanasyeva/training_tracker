@@ -12,6 +12,7 @@ app = Flask(__name__)
 app.config["SQLALCHEMY_DATABASE_URI"] = os.getenv("DB_ENGINE")
 app.config["SECRET_KEY"] = os.getenv("SECRET_KEY")
 app.config["DEBUG"] = os.getenv("DEBUG")
+app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = os.getenv("SQLALCHEMY_TRACK_MODIFICATIONS")
 
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
