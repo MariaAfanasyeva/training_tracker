@@ -4,6 +4,7 @@ from werkzeug.security import check_password_hash, generate_password_hash
 from app import db
 from models import User
 from services.auth import create_tokens, use_refresh_token, verify_refresh_token
+from schemas import user_schema, users_schema
 
 auth = Blueprint("auth", __name__)
 
@@ -54,3 +55,21 @@ def refresh():
         return use_refresh_token(refresh_token)
     else:
         return make_response(jsonify({"message": "Invalid token"}), 401)
+
+
+@auth.route("/users", methods=["GET"])
+def get_all_users_data():
+    users = User.query.all()
+    result = users_schema.dump(users)
+    return make_response(result)
+
+
+@auth.route("/users/<user_id>", methods=["GET"])
+def get_user_by_id(user_id):
+    user = User.query.get(user_id)
+    if user is not None:
+        result  = user_schema.dump(user)
+        return make_response(result)
+    else: 
+        return make_response(jsonify({"message": "Invalid user's id"}), 500)
+    
