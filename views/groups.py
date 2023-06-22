@@ -1,6 +1,6 @@
 from flask import Blueprint, jsonify, make_response, request
 
-from app import db
+from extensions import db
 from models import Group
 from schemas import group_schema, groups_schema
 from services.auth import login_required, user_is_admin, user_is_author

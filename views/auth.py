@@ -1,7 +1,7 @@
 from flask import Blueprint, jsonify, make_response, request
 from werkzeug.security import check_password_hash, generate_password_hash
 
-from app import db
+from extensions import db
 from models import User
 from services.auth import create_tokens, use_refresh_token, verify_refresh_token
 from schemas import user_schema, users_schema
