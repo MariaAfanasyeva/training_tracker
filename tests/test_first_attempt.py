@@ -64,7 +64,7 @@ def test_status_code_get_all_groups(client, endpoint):
     
 
 @pytest.mark.parametrize("endpoint", [("/group"), ("/user"), ("/weight"), ("/distance"), ("/exercise"), ("/set"), ("/training")])
-def test_get_first_weight(client, endpoint, insert_test_data):
+def test_status_code_get_first_weight(client, endpoint, insert_test_data):
     response = client.get(f'{endpoint}/1')
     assert response.status_code == 200
     
