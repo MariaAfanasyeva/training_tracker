@@ -64,7 +64,7 @@ def get_all_users_data():
     return make_response(result)
 
 
-@auth.route("/users/<user_id>", methods=["GET"])
+@auth.route("/user/<user_id>", methods=["GET"])
 def get_user_by_id(user_id):
     user = User.query.get(user_id)
     if user is not None:

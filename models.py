@@ -22,7 +22,7 @@ class Training(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     training_date = db.Column(db.Date, default=datetime.datetime.now)
     status = db.Column(db.String(255))
-    user_id = db.Column(db.Integer, db.ForeignKey("user.id", ondelete="SET NULL"), nullable=True, default=None)
+    created_by = db.Column(db.Integer, db.ForeignKey("user.id", ondelete="SET NULL"), nullable=True, default=None)
     sets = db.relationship("Set", backref="training", lazy=True)
 
 
@@ -65,3 +65,5 @@ class User(db.Model):
     groups = db.relationship("Group", backref="user", lazy=True)
     weights = db.relationship("Weight", backref="user", lazy=True)
     exercises = db.relationship("Exercise", backref="user", lazy=True)
+    trainins = db.relationship("Training", backref="user", lazy=True)
+    sets = db.relationship("Set", backref="user", lazy=True)

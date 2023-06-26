@@ -30,7 +30,7 @@ def get_training_by_id(training_id):
 def create_training(current_user):
     status = "started"
     user_id = current_user.id
-    new_training = Training(status=status, user_id=user_id)
+    new_training = Training(status=status, created_by=user_id)
     db.session.add(new_training)
     db.session.commit()
     return make_response(training_schema.dump(new_training), 201)
@@ -41,7 +41,7 @@ def create_training(current_user):
 def delete_training(current_user, training_id):
     training = Training.query.get(training_id)
     if training is not None:
-        if user_is_admin(current_user) or training.user_id == current_user.id:
+        if user_is_admin(current_user) or training.created_by == current_user.id:
             db.session.delete(training)
             db.session.commit()
             return make_response(jsonify({"message": "Training deleted"}), 200)
@@ -56,7 +56,7 @@ def delete_training(current_user, training_id):
 def update_training(current_user, training_id):
     training = Training.query.get(training_id)
     if training is not None:
-        if user_is_admin(current_user) or training.user_id == current_user.id:
+        if user_is_admin(current_user) or training.created_by == current_user.id:
             status = request.json["status"]
             training.status = status
             db.session.commit()
