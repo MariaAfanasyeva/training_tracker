@@ -9,6 +9,7 @@ __pycache__/
 # Distribution / packaging
 .Python
 config.py
+config_test.py
 build/
 develop-eggs/
 dist/
